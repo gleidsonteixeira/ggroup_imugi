@@ -1,0 +1,157 @@
+
+<?php $__env->startSection('titulo','Unit 27 | Listening'); ?>
+<?php $__env->startSection('conteudo'); ?>
+<!-- WRAPPER ALL -->
+
+<?php echo $__env->make('layouts.menus.mSidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('layouts.header.mHeader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+<main>
+    <!-- Conteúdo principal central -->
+    <div class="dashboard">
+        <div id="unidade" class="box" data-apostila="apostila2" data-unidade="unidade27" data-etapa="listening">
+            <h3 class="barlow">UNIT 27</h3>
+            <h5 class="barlow">5 - LISTENING</h5>
+            <span class="play-audio">( Aperte o play )</span>
+            <audio controls="" controlslist="nodownload" class="suave">
+                <source src="<?php echo e(asset('assets/audio/apostila2/UNIT 27/4. LISTENING/LISTENING.ogg')); ?>" type="audio/ogg">
+            </audio>
+            <div class="clear"></div>
+            <h5 class="barlow" style="margin-top:16px">A - Listen to the Dialogue and answer the questions.</h5>
+            <div class="metade" style="margin-top: 16px">
+                <form id="unidade27listening227" method="post">
+                    <p>
+                        1 - What’s necessary during the interview?<br>
+                        <input type="text" name="listening227-1" class="full left-align" placeholder="Responda aqui" required>
+                    </p>
+                    <p>
+                        2 - What do you have to take with you?<br>
+                        <input type="text" name="listening227-2" class="full left-align" placeholder="Responda aqui" required>
+                    </p>
+                    <p>
+                        3 - What other recommendation do they give to deal with that?<br>
+                        <input type="text" name="listening227-3" class="full left-align" placeholder="Responda aqui" required>
+                    </p>
+
+
+                    <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
+                    <input type="hidden" name="resposta_id" value="0">
+                    <input type="hidden" name="unidade_id" value="27">
+                    <input type="hidden" name="atividade_id" value="227">
+                    <button type="submit" class="mini-title suave click suave">Salvar resposta</button>
+                </form>
+            </div>
+            <div style="margin-top: 36px">
+                <figure>
+                    <img src="<?php echo e(asset('assets/img/dominating/unit27/listening.jpg')); ?>" alt="conversa">
+                </figure>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    activeMenu();
+
+    $("form").each(function() {
+        var atividade_id = $(this).find('input[name="atividade_id"]').val();
+        checkAtividade(atividade_id);
+    });
+
+    $("#unidade27listening227").submit(function(e) {
+        e.preventDefault();
+        $(this).find('button').prop('disabled', true);
+        var respostas = '{';
+        $('#unidade27listening227 input[type="text"]').each(function(index) {
+            if (($('#unidade27listening227 input[type="text"]').length - 1) == index) {
+                respostas += '"' + $(this).attr("name") + '":"' + $(this).val() + '"}';
+            } else {
+                respostas += '"' + $(this).attr("name") + '":"' + $(this).val() + '",';
+            }
+        });
+        if ($('#unidade27listening227 input[name="resposta_id"').val() != 0) {
+            atualizarAtividade($('#unidade27listening227'), respostas);
+        } else {
+            enviarAtividade($('#unidade27listening227'), respostas);
+        }
+    });
+
+    function checkAtividade(atividade_id) {
+        request = $.ajax({
+            url: window.location.pathname + '/respostasCheck/' + atividade_id,
+            type: 'get',
+            error: function() {
+                console.log("Erro de retorno de dados.");
+            }
+        });
+        request.done(function(response) {
+            if (response == 0) {
+                console.log("não veio nada");
+            } else {
+                var objeto = JSON.parse(response[0].resposta_respostas);
+                var chaves = Object.keys(objeto);
+                var respostas = Object.values(objeto);
+                for (j = 0; j < respostas.length; j++) {
+                    $('#unidade27listening' + atividade_id + ' input[name="' + chaves[j] + '"]').val(respostas[j]);
+                    $('#unidade27listening' + atividade_id + ' input[name="' + chaves[j] + '"]').attr("value", respostas[j]);
+                }
+                $('#unidade27listening' + atividade_id + ' input[name="resposta_id"]').val(response[0].resposta_id);
+                $('#unidade27listening' + atividade_id + ' input[name="resposta_id"]').attr("value", response[0].resposta_id);
+            }
+        });
+    }
+
+
+    function enviarAtividade(formId, respostas) {
+        var resposta = {
+            "_token": formId.find('input[name="_token"]').val(),
+            "resposta_respostas": respostas,
+            "atividade_id": formId.find('input[name="atividade_id"]').val(),
+            "unidade_id": formId.find('input[name="unidade_id"]').val()
+        };
+        request = $.ajax({
+            url: window.location.pathname + '/respostas',
+            data: resposta,
+            type: 'post',
+            error: function() {
+                console.log("Erro de envio.");
+            }
+        });
+        request.done(function(response) {
+            if (response == "1") {
+                alert("Respostas salvas");
+                window.location.reload();
+            } else if (response == 2) {
+                alert("Respostas atualizadas");
+                window.location.reload();
+            }
+        });
+    }
+
+    function atualizarAtividade(formId, respostas) {
+        var resposta = {
+            "_token": formId.find('input[name="_token"]').val(),
+            "resposta_id": formId.find('input[name="resposta_id"]').val(),
+            "resposta_respostas": respostas
+        };
+        request = $.ajax({
+            url: window.location.pathname + '/respostas',
+            data: resposta,
+            type: 'post',
+            error: function() {
+                console.log("Erro de envio.");
+            }
+        });
+        request.done(function(response) {
+            if (response == "1") {
+                alert("Respostas salvas");
+                window.location.reload();
+            } else if (response == 2) {
+                alert("Respostas atualizadas");
+                window.location.reload();
+            }
+        });
+    }
+</script>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.template', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /home1/imugi270/site.imugi.com.br/resources/views/apostila2/unidade27/listening.blade.php ENDPATH**/ ?>

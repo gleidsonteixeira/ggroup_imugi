@@ -1,0 +1,3 @@
+<?php echo $__env->make('layouts.portal.head', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->yieldContent('conteudo'); ?>
+<?php echo $__env->make('layouts.portal.scripts', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\imugiOnline\resources\views/layouts/portal/template.blade.php ENDPATH**/ ?>

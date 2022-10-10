@@ -1,0 +1,56 @@
+.introducao{
+	font-size: 14pt; 
+	text-align: justify;
+}
+.motivos{
+	font-size: 14pt;
+}
+.title-table{
+	background-color: #85ba34!important;
+}
+th, td{border: none; text-align: center;}
+
+.circle {
+    background-color: #85ba34;
+    border-radius: 200px;
+    color: white;
+    height: 200px;
+    font-weight: bold;
+    width: 200px;
+    display: table;
+    margin: 20px auto auto 0;
+}
+
+.modulo{
+    margin-left: 80px;
+}
+
+#caminhos{background-color: #7DC242;position: absolute;top: 13px;left: 26px;display: flex;justify-content: center;border-radius: 5px;padding: 0 26px;}
+#caminhos a{line-height: 30px;padding: 0 26px;display: block;color: #0C0F08;}
+#caminhos a:hover{color: #FFFFFF;}
+
+@media only screen and (min-width: 320px) and (max-width: 767px){
+    #caminhos{width: 100%;top: 0;left: 0;border-radius: 0;}
+    body{
+        text-align: left!important;
+    }
+    .modulo{
+    margin-left: 0px!important;
+    }
+    #logo_portal{
+        width: 220px!important;
+    }
+    h3{
+        font-size: 20pt!important;
+    }
+    #depende{
+        font-size: 20pt!important;
+    }
+    .hero-section-inner h2{
+        text-align: left!important;
+    }
+    #sobre{
+        width: 320px!important;
+    }
+}
+
